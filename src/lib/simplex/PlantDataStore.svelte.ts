@@ -47,4 +47,15 @@ export default class PlantDataStore {
 	hydroEnabled = $derived(this._barePlantData.hydro.enabled);
 	solarEnabled = $derived(this._barePlantData.solar.enabled);
 	windEnabled = $derived(this._barePlantData.wind.enabled);
+
+	disableAll() {
+		for (const key of Object.keys(this._barePlantData)) {
+			this._barePlantData[key as PlantType].enabled = false;
+		}
+	}
+	enableAll() {
+		for(const key of Object.keys(this._barePlantData)) {
+			this._barePlantData[key as PlantType].enabled = true;
+		}
+	}
 }

@@ -1,5 +1,5 @@
-import type PlantDataStore from '#lib/PlantDataStore.svelte.ts';
-import type BlocksDataStore from '#lib/BlocksDataStore.ts';
+import type PlantDataStore from '#lib/simplex/PlantDataStore.svelte.ts';
+import type BlocksDataStore from '#lib/simplex/BlocksDataStore.ts';
 
 export default class ConstraintsStore implements IConstraintsStore {
 	private readonly plantDataStore: PlantDataStore;

@@ -1,9 +1,8 @@
-import type PlantDataStore from '#lib/PlantDataStore.svelte.ts';
-import BlocksDataStore from '#lib/BlocksDataStore.ts';
-import ConstraintsStore from '#lib/ConstraintsStore.ts';
-import { delay } from 'es-toolkit';
+import type PlantDataStore from '#lib/simplex/PlantDataStore.svelte.ts';
+import BlocksDataStore from '#lib/simplex/BlocksDataStore.ts';
+import ConstraintsStore from '#lib/simplex/ConstraintsStore.ts';
 
-export default class GridCostMinimize {
+export default class GridCostOptimizer {
 	private hours = 4;
 	private _plantDataStore: PlantDataStore | null = null;
 	private _tableau: number[][] | null = null;

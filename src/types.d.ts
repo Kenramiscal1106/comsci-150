@@ -24,3 +24,11 @@ type BlockData = {
 	wind: number;
 	solar: number;
 }
+
+type EmissionConfig = {
+	enabled:boolean,
+	value: number
+}
+
+type ButtonStyle = "primary" | "secondary" | "tertiary" | "ghost";
+type ButtonSize = "small" | "medium" | "large";
