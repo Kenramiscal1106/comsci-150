@@ -48,14 +48,9 @@ export default class PlantDataStore {
 	solarEnabled = $derived(this._barePlantData.solar.enabled);
 	windEnabled = $derived(this._barePlantData.wind.enabled);
 
-	disableAll() {
-		for (const key of Object.keys(this._barePlantData)) {
-			this._barePlantData[key as PlantType].enabled = false;
-		}
-	}
-	enableAll() {
-		for(const key of Object.keys(this._barePlantData)) {
-			this._barePlantData[key as PlantType].enabled = true;
+	updateFromDialog(plantData: Record<PlantType, boolean>) {
+		for (const key of Object.keys(plantData) as Array<keyof typeof plantData>) {
+			this._barePlantData[key].enabled = plantData[key];
 		}
 	}
 }

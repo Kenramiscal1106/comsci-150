@@ -30,5 +30,7 @@ type EmissionConfig = {
 	value: number
 }
 
-type ButtonStyle = "primary" | "secondary" | "tertiary" | "ghost";
+type ButtonVariant = "primary" | "secondary" | "tertiary" | "ghost";
 type ButtonSize = "small" | "medium" | "large";
+
+type ActiveTab = "results" | "simplex";

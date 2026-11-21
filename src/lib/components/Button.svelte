@@ -4,14 +4,14 @@
     import type {HTMLButtonAttributes} from "svelte/elements";
 
     interface Props {
-        style?: ButtonStyle;
+        variant?: ButtonVariant;
         size?: ButtonSize;
         children: Snippet;
     }
-    let {size = "medium", style = "primary", children, ...buttonAttributes}: Props & HTMLButtonAttributes = $props();
+    let {size = "medium", variant = "primary", children, class: className, ...buttonAttributes}: Props & HTMLButtonAttributes = $props();
 </script>
 
-<button class={cn(size, style)} {...buttonAttributes}>
+<button class={cn(size, variant, className)} {...buttonAttributes}>
     {@render children()}
 </button>
 
@@ -48,6 +48,11 @@
 
     .primary {
         background: var(--Button-button-primary, #0F62FE);
+        color:white;
+    }
+
+    .secondary {
+        background: var(--Button-button-secondary, #393939);
         color:white;
     }
 

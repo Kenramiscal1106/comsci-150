@@ -20,8 +20,10 @@
 <style>
     div {
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         gap: 8px;
+    }
+    input[type="checkbox"] {
+        accent-color: black;
     }
 </style>

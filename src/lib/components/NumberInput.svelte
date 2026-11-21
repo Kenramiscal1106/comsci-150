@@ -1,5 +1,6 @@
 <script lang="ts">
     import type {HTMLInputAttributes} from "svelte/elements";
+    import {cn} from "cn";
 
     interface Props extends HTMLInputAttributes {
         id: string;
@@ -7,27 +8,33 @@
         value: number
     }
 
-    let {id, labelText, value=$bindable()}: Props = $props();
+    let {id, labelText, value=$bindable(), ...otherAttributes}: Props = $props();
 </script>
-<div class="number-input-container">
+
+<div class={cn("number-input-container", otherAttributes.disabled ? "disabled" : "")}>
     {#if labelText}
         <label for={id}>{labelText}</label>
     {/if}
-    <div>
         <input type="number" {id} bind:value={value}/>
-    </div>
 </div>
 
 <style>
     input[type="number"] {
         all: unset;
+        background-color:white;
+        padding:16px;
+        &:focus {
+            box-shadow: 0 0 0 2px inset var(--Focus-focus, #0F62FE);
+        }
     }
 
     .number-input-container {
         display: flex;
-        padding-bottom: 8px;
+        flex-direction: column;
         align-items: flex-start;
-        gap: 8px;
-        align-self: stretch;
+        &.disabled {
+            opacity:0.5;
+            pointer-events:none;
+        }
     }
 </style>

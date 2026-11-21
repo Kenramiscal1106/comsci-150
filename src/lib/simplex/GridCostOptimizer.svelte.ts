@@ -10,20 +10,24 @@ export default class GridCostOptimizer {
 		enabled: false,
 		value: 165000
 	});
+
+	_iteration = $state(0);
+
 	private _blocksDataStore: BlocksDataStore = new BlocksDataStore();
 	private _shadowPrices: number[] = $state(new Array<number>(this._blocksDataStore.demands.length));
 	private _answer: number = $state(-Infinity);
-	private tableauPerIteration: number[][][] = [];
-	private _noSolutionFound: boolean = true;
+	tableauPerIteration: number[][][] = [];
+	_solutionFound: boolean = $state(false);
 	private _energyOutputPerPlant = $state<Record<PlantType, number[]>>({
 		coal: [0, 0, 0, 0, 0, 0],
 		geothermal: [0, 0, 0, 0, 0, 0],
 		oil: [0, 0, 0, 0, 0, 0],
 		naturalGas: [0, 0, 0, 0, 0, 0],
+		hydro: [0, 0, 0, 0, 0, 0],
 		wind: [0, 0, 0, 0, 0, 0],
 		solar: [0, 0, 0, 0, 0, 0],
-		hydro: [0, 0, 0, 0, 0, 0]
 	});
+	_completed: boolean = $state(false);
 	private _tableauPlantOrder: PlantType[] = $derived.by(() => {
 		if (this._plantDataStore === null) return [];
 		const array: PlantType[] = [];
@@ -36,29 +40,33 @@ export default class GridCostOptimizer {
 		if (this._plantDataStore.windEnabled) array.push('wind');
 		return array;
 	});
-	readonly answer = $derived(this._answer);
-	readonly shadowPrices = $derived(this._shadowPrices);
-	readonly energyOutput = $derived(this._energyOutputPerPlant);
+	answer = $derived(this._answer);
+	shadowPrices = $derived(this._shadowPrices);
+	energyOutput = $derived(this._energyOutputPerPlant);
+	completed = $derived(this._completed);
+
 
 	loadPlantData(plantDataStore: PlantDataStore) {
 		this._plantDataStore = plantDataStore;
 	}
 
-	async performCalculation() {
+	performOptimization() {
 		if (this._tableau == null) {
 			this._tableau = [];
 		}
 		this.setUpTableau();
 		this.transposeTableau();
 		this.addIdentityColumns();
-		this.startSimplex();
+		this.performSimplex();
+		this.compileAnswers();
 	}
 
-	extractAnswer(): void {
-		this.storeAnswer();
-		this.storeShadowPrices();
-		this.storePlantEnergyGeneration();
+	updateEmissionConfigFromDialog(emissionConfig: EmissionConfig) {
+		console.log(emissionConfig)
+		this._emissionConfig = emissionConfig;
 	}
+
+
 
 	private setUpTableau() {
 		if (this._tableau == null || this._plantDataStore == null) return;
@@ -96,16 +104,20 @@ export default class GridCostOptimizer {
 		}
 	}
 
-	private startSimplex() {
+	private performSimplex() {
+		this._iteration = 0;
+		this._solutionFound = false;
 		if (this._tableau == null) return;
-		let iteration = 0;
+		this.tableauPerIteration = [];
+		this.tableauPerIteration.push(this._tableau)
 		while (this.hasNegativeInObjectiveRow()) {
 			const pivotColumnData = this.findColumn();
 			if (pivotColumnData === null) return;
 			const pivotRowData = this.findRow(pivotColumnData);
 
 			if (pivotRowData === null || pivotRowData.min === Infinity) {
-				this._noSolutionFound = true;
+				this._solutionFound = false;
+				console.log("cannot found solution")
 				return;
 			}
 
@@ -119,9 +131,10 @@ export default class GridCostOptimizer {
 					this._tableau[i][j] = this._tableau[i][j] - this._tableau[pivotRowData.i][j] * multiplier;
 				}
 			}
-			iteration++;
+			this._iteration++;
+			this.tableauPerIteration.push(structuredClone(this._tableau))
 		}
-		this._noSolutionFound = true;
+		this._solutionFound = true;
 	}
 
 	private hasNegativeInObjectiveRow() {
@@ -175,7 +188,7 @@ export default class GridCostOptimizer {
 
 	private storeShadowPrices() {
 		this.resetShadowPrices();
-		if (this._tableau == null || this._noSolutionFound) return;
+		if (this._tableau == null || !this._solutionFound) return;
 		const activeVariable: (number | null)[] = new Array(6).fill(null);
 		this._tableau.forEach((row, i) => {
 			row.forEach((number, numI) => {
@@ -191,13 +204,11 @@ export default class GridCostOptimizer {
 			if (item == null) return 0;
 			return Number((this._tableau[item][this._tableau[i].length - 1] / 4).toFixed(2));
 		});
-		console.log(this._tableau.map((row) => row[row.length - 1] / 4));
-		console.log($state.snapshot(this._shadowPrices));
 	}
 
 	private storePlantEnergyGeneration() {
 		this.resetPlantEnergyGeneration();
-		if (this._tableau == null || this._noSolutionFound) return;
+		if (this._tableau == null || !this._solutionFound) return;
 		const originalColumnCount = this._tableau[0].length - this._tableau.length - 1;
 
 		for (let j = originalColumnCount; j < this._tableau[0].length - 2; j++) {
@@ -211,8 +222,19 @@ export default class GridCostOptimizer {
 
 	private storeAnswer() {
 		this.resetAnswer();
-		if (this._tableau == null || this._noSolutionFound) return;
+		if (this._tableau == null || !this._solutionFound) return;
 		this._answer = this._tableau[this._tableau.length - 1][this._tableau[0].length - 1];
+	}
+
+	private extractAnswer(): void {
+		this.storeAnswer();
+		this.storeShadowPrices();
+		this.storePlantEnergyGeneration();
+	}
+
+	private compileAnswers() {
+		this.extractAnswer();
+		this._completed = true;
 	}
 
 	private resetAnswer() {
