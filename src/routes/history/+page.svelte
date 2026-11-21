@@ -2,10 +2,12 @@
     import {retrieveOptimizationHistory} from "#lib/localStorage.ts";
     import InfoCard from "#lib/components/InfoCard.svelte";
     import Button from "#lib/components/Button.svelte";
+    import {goto} from "$app/navigation";
+    import {resolve} from "$app/paths";
 
     const history = retrieveOptimizationHistory();
 </script>
-<div>
+<div class="self-center">
 
     {#if history.length !== 0}
         {#each history as optimizationRecord}
@@ -73,6 +75,11 @@
             </div>
             <hr class="my-6"/>
         {/each}
+        {:else}
+        <div>
+            <h2 class="text-center text-2xl mb-3">History is empty </h2>
+            <Button onclick={() => goto(resolve(`/calculate`))}>Back to Calculate Tab</Button>
+        </div>
     {/if}
 </div>
 

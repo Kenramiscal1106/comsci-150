@@ -14,7 +14,7 @@ type PlantRecord = Record<PlantType, PlantData>;
 
 type Constraint = Partial<Record<PlantType, number[]>> & { b: number };
 
-interface IConstraintsStore {
+interface ITableauCreatorStore {
 	getInitialTableau(groups: number): number[][];
 }
 

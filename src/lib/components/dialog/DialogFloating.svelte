@@ -1,5 +1,6 @@
 <script lang="ts">
 
+
     import {getGridCostOptimizer, getOptimizationDialog, getPlantDataStore} from "#lib/context.ts";
     import TileSelect from "#lib/components/TileSelect.svelte";
     import Button from "#lib/components/Button.svelte";
@@ -16,7 +17,9 @@
         ) as Record<PlantType, boolean>
     )
     const emissionConfig: EmissionConfig = $state(gridCostOptimizer._emissionConfig);
-    $inspect(emissionConfig)
+
+    let allDisabled = $state(false);
+    let zeroCarbon = $state(false)
 </script>
 
 <div class="dialog">
@@ -87,6 +90,9 @@
                         {/snippet}
                     </TileSelect>
                 </div>
+                {#if allDisabled}
+                    <div class="text-red-500">Error: Disabling all plant groups are not allowed</div>
+                {/if}
                 <div class="flex self-stretch gap-2">
                     <Button onclick={() => {
                         dialogPlantData = {
@@ -119,7 +125,15 @@
         <div class="dialog-footer">
             <Button onclick={() => optimizationDialog.closeDialog()} class="grow" variant="secondary">Cancel
             </Button>
-            <Button onclick={() => optimizationDialog.nextStage()} class="grow">Next</Button>
+            <Button onclick={() => {
+                if (Object.values(dialogPlantData).every(plantDatum => !plantDatum)) {
+                    allDisabled = true
+                    return;
+                }
+                allDisabled = false;
+                optimizationDialog.nextStage()
+            }} class="grow">Next
+            </Button>
 
         </div>
     {:else if optimizationDialog.stageI === 1}
@@ -136,6 +150,10 @@
                             bind:value={emissionConfig.value}
                             disabled={!emissionConfig.enabled}
                     />
+                    {#if zeroCarbon}
+                        <div class="text-red-500">Error: You cannot set carbon limit to zero</div>
+                    {/if}
+                    <div></div>
                 </div>
             </div>
         </div>
@@ -143,6 +161,11 @@
             <Button variant="secondary" onclick={() => optimizationDialog.previousStage()} class="flex-1">Back
             </Button>
             <Button class="flex-1" onclick={() => {
+                        if (emissionConfig.enabled && emissionConfig.value === 0) {
+                            zeroCarbon = true;
+                            return;
+                        }
+                        zeroCarbon = false;
                         plantDataStore.updateFromDialog($state.snapshot(dialogPlantData))
                         gridCostOptimizer.updateEmissionConfigFromDialog($state.snapshot(emissionConfig));
                         delay(10);

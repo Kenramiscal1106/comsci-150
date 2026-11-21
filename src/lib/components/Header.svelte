@@ -13,9 +13,6 @@ import MenuItem from "#lib/components/MenuItem.svelte";
             <MenuItem href="/history">
                 History
             </MenuItem>
-            <MenuItem href="/about">
-                About
-            </MenuItem>
         </nav>
 </header>
 

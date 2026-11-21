@@ -13,12 +13,12 @@
 </script>
 
 {#if !gridCostOptimizer._completed && !gridCostOptimizer._solutionFound}
-    <div class=" flex flex-col justify-center items-center">
-        <div>
-            <h1>Yet to cook</h1>
-            <p>You haven't started an optimization yet.</p>
+    <div class=" flex flex-col justify-center items-center self-center">
+<!--        <div>-->
+            <h1 class="text-3xl font-medium">Yet to cook</h1>
+            <p class="mb-3">You haven't started an optimization yet.</p>
             <Button onclick={() => {optimizationDialog.openDialog()}}>Start optimizing</Button>
-        </div>
+<!--        </div>-->
     </div>
 {/if}
 {#if gridCostOptimizer._completed}

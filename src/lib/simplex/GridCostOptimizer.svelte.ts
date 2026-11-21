@@ -1,6 +1,6 @@
 import type PlantDataStore from '#lib/simplex/PlantDataStore.svelte.ts';
 import BlocksDataStore from '#lib/simplex/BlocksDataStore.ts';
-import ConstraintsStore from '#lib/simplex/ConstraintsStore.ts';
+import TableauCreator from '#lib/simplex/TableauCreator.ts';
 import {saveHistoryToLocalStorage} from "#lib/localStorage.ts";
 
 export default class GridCostOptimizer {
@@ -73,7 +73,7 @@ export default class GridCostOptimizer {
 
 	private setUpTableau() {
 		if (this._tableau == null || this._plantDataStore == null) return;
-		const constraintsStore = new ConstraintsStore(this._plantDataStore, this._blocksDataStore);
+		const constraintsStore = new TableauCreator(this._plantDataStore, this._blocksDataStore);
 		constraintsStore.initiateConstraints(this._emissionConfig);
 		this._tableau = constraintsStore.getInitialTableau();
 	}

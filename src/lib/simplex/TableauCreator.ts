@@ -1,7 +1,7 @@
 import type PlantDataStore from '#lib/simplex/PlantDataStore.svelte.ts';
 import type BlocksDataStore from '#lib/simplex/BlocksDataStore.ts';
 
-export default class ConstraintsStore implements IConstraintsStore {
+export default class TableauCreator implements ITableauCreatorStore {
 	private readonly plantDataStore: PlantDataStore;
 	private readonly blocksDataStore: BlocksDataStore;
 
