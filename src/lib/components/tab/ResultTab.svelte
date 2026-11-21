@@ -30,6 +30,10 @@
         font-size: 14px;
         font-style: normal;
         line-height: 18px; /* 128.571% */
+        transition: 70ms all cubic-bezier(0.4, 0.14, 0.3, 1);
+    }
+    .tab:hover:not(.tab-active) {
+        box-shadow:0 -2px 0 0 inset var(--border-strong-contextual, #8D8D8D);
     }
     .tab-active {
         box-shadow:0 -2px 0 0 inset var(--Border-border-interactive, #0F62FE);

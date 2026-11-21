@@ -13,7 +13,7 @@
 </script>
 
 {#if !gridCostOptimizer._completed && !gridCostOptimizer._solutionFound}
-    <div class="h-full w-full flex flex-col justify-center items-center">
+    <div class=" flex flex-col justify-center items-center">
         <div>
             <h1>Yet to cook</h1>
             <p>You haven't started an optimization yet.</p>
@@ -37,13 +37,12 @@
             <IterationTableau/>
         {/if}
     {:else}
-        <div>
-            Cannot found solution
-            <Button onclick={() => optimizationDialog.openDialog()}>Start another optimization</Button>
+        <div class="flex flex-col justify-center items-center">
+            <div>
+                Cannot found solution
+                <Button onclick={() => optimizationDialog.openDialog()}>Change optimization configuration</Button>
+
+            </div>
         </div>
     {/if}
 {/if}
-<!--{:else}
-<div>
-    Cannot
-</div>-->

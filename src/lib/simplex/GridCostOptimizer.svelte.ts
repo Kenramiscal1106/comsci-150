@@ -1,6 +1,7 @@
 import type PlantDataStore from '#lib/simplex/PlantDataStore.svelte.ts';
 import BlocksDataStore from '#lib/simplex/BlocksDataStore.ts';
 import ConstraintsStore from '#lib/simplex/ConstraintsStore.ts';
+import {saveHistoryToLocalStorage} from "#lib/localStorage.ts";
 
 export default class GridCostOptimizer {
 	private hours = 4;
@@ -57,8 +58,10 @@ export default class GridCostOptimizer {
 		this.setUpTableau();
 		this.transposeTableau();
 		this.addIdentityColumns();
+
 		this.performSimplex();
 		this.compileAnswers();
+		this.addAnswersToHistory();
 	}
 
 	updateEmissionConfigFromDialog(emissionConfig: EmissionConfig) {
@@ -102,6 +105,8 @@ export default class GridCostOptimizer {
 			const insertedArray: number[] = new Array(identityMatSize).fill(0).fill(1, index, index + 1);
 			row.splice(row.length - 1, 0, ...insertedArray);
 		}
+		this.tableauPerIteration.push(structuredClone(this._tableau))
+
 	}
 
 	private performSimplex() {
@@ -109,7 +114,6 @@ export default class GridCostOptimizer {
 		this._solutionFound = false;
 		if (this._tableau == null) return;
 		this.tableauPerIteration = [];
-		this.tableauPerIteration.push(this._tableau)
 		while (this.hasNegativeInObjectiveRow()) {
 			const pivotColumnData = this.findColumn();
 			if (pivotColumnData === null) return;
@@ -255,5 +259,15 @@ export default class GridCostOptimizer {
 
 	private resetShadowPrices() {
 		this._shadowPrices = new Array(6).fill(0);
+	}
+
+	private addAnswersToHistory() {
+		saveHistoryToLocalStorage({
+			answer: this._answer,
+			energyOutputPerPlant: $state.snapshot(this._energyOutputPerPlant),
+			shadowPrices: $state.snapshot(this._shadowPrices),
+			dateTime: new Date().toISOString(),
+			iterations: $state.snapshot(this._iteration)
+		})
 	}
 }

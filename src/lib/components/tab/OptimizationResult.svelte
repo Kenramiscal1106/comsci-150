@@ -1,32 +1,34 @@
 <script>
     import {getGridCostOptimizer, getOptimizationDialog, getPlantDataStore} from "#lib/context.ts";
     import Button from "#lib/components/Button.svelte";
+    import InfoCard from "#lib/components/InfoCard.svelte";
 
     const plantDataStore = getPlantDataStore();
     const gridCostOptimizer = getGridCostOptimizer();
     const optimizationDialog = getOptimizationDialog();
 </script>
 
-<div>
+<div class="flex flex-col gap-4">
     <div>
         <Button onclick={() => optimizationDialog.openDialog()}>Start another optimization</Button>
     </div>
-    Solution Found
-    <div>
-        Number of iterations: {gridCostOptimizer._iteration}
+    <div class="flex gap-4">
+        <InfoCard title="Total Minimum Cost (Z)" value={gridCostOptimizer.answer.toLocaleString('en-US', {
+            maximumFractionDigits: 2
+        })}/>
+        <InfoCard title="Number of iterations" value={gridCostOptimizer._iteration.toString()}/>
     </div>
-    <div>
-        Total Minimum Cost (Z): {gridCostOptimizer.answer.toLocaleString('en-US', {
-        maximumFractionDigits: 2
-    })}
-    </div>
-    <table class="border border-collapse">
+    <table class="self-start">
+        <caption>
+            <h2>Unknowns</h2>
+        </caption>
         <thead>
+
         <tr>
             <th>Plant Group</th>
             {#each {length: plantDataStore.getNumBlocks()} as value, i (i)}
 
-                <th class="border border-collapse min-w-5">B{i + 1}</th>
+                <th>B{i + 1}</th>
             {/each}
         </tr>
         </thead>
@@ -34,14 +36,71 @@
 
         {#each Object.entries(gridCostOptimizer.energyOutput) as [key, values] (key)}
             {#if plantDataStore._barePlantData[key].enabled}
-                <tr class="border border-collapse">
-                    <td class="border border-collapse">{key}</td>
+                <tr>
+                    <td>{key}</td>
                     {#each values as blockValue }
-                        <td class="border border-collapse min-w-5">{blockValue}</td>
+                        <td class="number-data">{blockValue}</td>
                     {/each}
                 </tr>
             {/if}
         {/each}
         </tbody>
     </table>
+
+    <table class="self-start">
+        <caption>
+            <h2>Prices Per block (In Pesos)</h2>
+        </caption>
+        <thead>
+
+        <tr>
+            {#each gridCostOptimizer.shadowPrices as value, i (i)}
+
+                <th>Block {i + 1}</th>
+            {/each}
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {#each gridCostOptimizer.shadowPrices as shadowPrice}
+                    <td class="number-data">{shadowPrice}</td>
+                {/each}
+            </tr>
+        </tbody>
+    </table>
 </div>
+
+<style>
+    table {
+        background: var(--layer-contextual, #F4F4F4);
+
+        caption {
+            background: var(--layer-contextual, #F4F4F4);
+            color: var(--Text-text-primary, #161616);
+            padding: 16px 16px 24px 16px;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 28px; /* 140% */
+            text-align: left;
+        }
+
+        th, td {
+            height: 40px;
+            padding: 16px;
+        }
+
+        th {
+            background: var(--layer-accent-contextual, #E0E0E0);
+            font-weight: 600;
+        }
+
+        tbody tr {
+            border-top: 1px solid var(--border-subtle-contextual, #C6C6C6);
+        }
+
+        td.number-data {
+            text-align: right;
+        }
+    }
+</style>

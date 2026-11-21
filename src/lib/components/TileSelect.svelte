@@ -36,6 +36,7 @@
         align-items: flex-start;
         flex: 1 0 0;
         background: var(--layer-contextual, #FFF);
+        transition: 70ms all cubic-bezier(0.4, 0.14, 0.3, 1)
     }
     label:hover:not(label:has(input:checked)) {
         background: var(--layer-hover-contextual, #E8E8E8);

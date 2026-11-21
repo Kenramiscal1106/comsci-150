@@ -32,7 +32,7 @@
 </svelte:head>
 
 <Header/>
-<main class="min-h-screen h-screen pt-16 flex flex-col gap-4 p-8">
+<main class="min-h-screen pt-16 flex flex-col gap-4 p-8 justify-center">
     {@render children()}
 </main>
 <OptimizationDialog/>
