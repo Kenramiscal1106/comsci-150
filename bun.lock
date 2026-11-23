@@ -5,6 +5,7 @@
     "": {
       "name": "final-project",
       "dependencies": {
+        "@twinkleplop/theme-github": "^0.2.5",
         "bezier-easing": "^3.2.0",
         "cn": "^0.5.2",
         "es-toolkit": "^1.53.2",
@@ -170,6 +171,8 @@
     "@twinkleplop/sql": ["@twinkleplop/sql@0.1.8", "", { "dependencies": { "@twinkleplop/core": "0.3.2" } }, "sha512-JJfsnRpz0mFFlfMWJhm45Q3L5A54MXom+nV6pCJ6lR6LpBt0vZrtRSJkVNhMH83pyrwT08iAy2ZGFu7ptPB8RQ=="],
 
     "@twinkleplop/svelte": ["@twinkleplop/svelte@0.1.8", "", { "dependencies": { "@twinkleplop/core": "0.3.2", "@twinkleplop/css": "0.1.8", "@twinkleplop/javascript": "0.1.8" } }, "sha512-9gJ6QwdcxR8ns2Mg7CRqSHr3eFhUikB2RT9r5moKcx/cZncSOGfyn5erwT80r3SBBb4nzO2qPiaGHhcuAem4Cw=="],
+
+    "@twinkleplop/theme-github": ["@twinkleplop/theme-github@0.2.5", "", { "dependencies": { "@twinkleplop/core": "0.3.2" } }, "sha512-PsLPrRtINLKC+7sRJlwGxqfhBA7V0gVCcRFbJlNW4KzjQpp/kz6vsKForsTqVEG66ZHGTPXnPa8Jae8u1dUFOA=="],
 
     "@twinkleplop/toml": ["@twinkleplop/toml@0.1.8", "", { "dependencies": { "@twinkleplop/core": "0.3.2" } }, "sha512-wGFytm/RPS9UsjyDfqKWDlJ2pDuCzE3Qz9rdPAVVzF9j3QaWQKYyb91bcWd9GtuWvnhTqhbqQCNB/vKnb6I4dg=="],
 

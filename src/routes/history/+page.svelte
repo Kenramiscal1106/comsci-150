@@ -7,6 +7,11 @@
 
     const history = retrieveOptimizationHistory();
 </script>
+
+<svelte:head>
+    <title>History | Gridsim</title>
+</svelte:head>
+
 <div class="self-center">
 
     {#if history.length !== 0}

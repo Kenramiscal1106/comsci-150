@@ -12,6 +12,11 @@
     const resultTabs = getResultTabs();
 </script>
 
+<svelte:head>
+    <title>Calculate | Gridsim</title>
+</svelte:head>
+
+
 {#if !gridCostOptimizer._completed && !gridCostOptimizer._solutionFound}
     <div class=" flex flex-col justify-center items-center self-center">
         <!--        <div>-->

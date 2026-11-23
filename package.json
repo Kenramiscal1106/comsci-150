@@ -32,6 +32,7 @@
 		"vite": "^8.3.0"
 	},
 	"dependencies": {
+		"@twinkleplop/theme-github": "^0.2.5",
 		"bezier-easing": "^3.2.0",
 		"cn": "^0.5.2",
 		"es-toolkit": "^1.53.2",

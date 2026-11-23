@@ -3,6 +3,11 @@
     $inspect(props);
 </script>
 
+<svelte:head>
+    <title>About | Gridsim</title>
+</svelte:head>
+
+
 <div class="manual">
     {#if props.data}
         {@render props.data.content()}
@@ -120,6 +125,16 @@
         }
         :global(hr) {
             @apply border-neutral-200 my-3 border-2;
+        }
+        :global(a) {
+            color:#0F62FE;
+            text-decoration: underline;
+
+        }
+
+        :global(code, pre code *) {
+            font-family: Consolas, "Courier New", monospace;
+            font-size:14px;
         }
     }
 </style>

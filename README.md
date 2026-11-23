@@ -34,6 +34,7 @@ as well as the varying operating cost of the other fuel plants per block:
 | Coal | 3,800 | 3,838 | 3,914 | 3,990 | 3,952 | 3,876 |
 | Natural Gas | 6,500 | 6,565 | 6,695 | 6,825 | 6,760 | 6,630 |
 | Geothermal | 1,500 | 1,515 | 1,545 | 1,575 | 1,560 | 1,530 |
+| Oil-based | 14,000 | 14,140 | 14,420 | 14,700 | 14,560 | 14,280 |
 
 Find the most optimal way to operate the power plant blocks
 
