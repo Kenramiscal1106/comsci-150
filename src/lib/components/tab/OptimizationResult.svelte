@@ -13,61 +13,65 @@
         <Button onclick={() => optimizationDialog.openDialog()}>Start another optimization</Button>
     </div>
     <div class="flex gap-4">
-        <InfoCard title="Total Minimum Cost (Z)" value={gridCostOptimizer.answer.toLocaleString('en-US', {
+        <InfoCard title="Total Minimum Cost (Z)" value={gridCostOptimizer._solutionFound ? gridCostOptimizer.answer.toLocaleString('en-US', {
             maximumFractionDigits: 2
-        })}/>
+        }) : "--"}/>
         <InfoCard title="Number of iterations" value={gridCostOptimizer._iteration.toString()}/>
     </div>
-    <table class="self-start">
-        <caption>
-            <h2>Unknowns</h2>
-        </caption>
-        <thead>
+    {#if gridCostOptimizer._solutionFound}
+        <table class="self-start">
+            <caption>
+                <h2>Unknowns</h2>
+            </caption>
+            <thead>
 
-        <tr>
-            <th>Plant Group</th>
-            {#each {length: plantDataStore.getNumBlocks()} as value, i (i)}
+            <tr>
+                <th>Plant Group</th>
+                {#each {length: plantDataStore.getNumBlocks()} as _, i (i)}
 
-                <th>B{i + 1}</th>
+                    <th>B{i + 1}</th>
+                {/each}
+            </tr>
+            </thead>
+            <tbody>
+
+            {#each Object.entries(gridCostOptimizer.energyOutput) as [key, values] (key)}
+                {#if plantDataStore._barePlantData[key].enabled}
+                    <tr>
+                        <td>{key}</td>
+                        {#each values as blockValue }
+                            <td class="number-data">{blockValue}</td>
+                        {/each}
+                    </tr>
+                {/if}
             {/each}
-        </tr>
-        </thead>
-        <tbody>
+            </tbody>
+        </table>
 
-        {#each Object.entries(gridCostOptimizer.energyOutput) as [key, values] (key)}
-            {#if plantDataStore._barePlantData[key].enabled}
-                <tr>
-                    <td>{key}</td>
-                    {#each values as blockValue }
-                        <td class="number-data">{blockValue}</td>
-                    {/each}
-                </tr>
-            {/if}
-        {/each}
-        </tbody>
-    </table>
+        <table class="self-start">
+            <caption>
+                <h2>Prices Per block (In Pesos)</h2>
+            </caption>
+            <thead>
 
-    <table class="self-start">
-        <caption>
-            <h2>Prices Per block (In Pesos)</h2>
-        </caption>
-        <thead>
+            <tr>
+                {#each gridCostOptimizer.shadowPrices as value, i (i)}
 
-        <tr>
-            {#each gridCostOptimizer.shadowPrices as value, i (i)}
-
-                <th>Block {i + 1}</th>
-            {/each}
-        </tr>
-        </thead>
-        <tbody>
+                    <th>Block {i + 1}</th>
+                {/each}
+            </tr>
+            </thead>
+            <tbody>
             <tr>
                 {#each gridCostOptimizer.shadowPrices as shadowPrice}
                     <td class="number-data">{shadowPrice}</td>
                 {/each}
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+        {:else}
+        <h2 class="text-xl font-bold">The problem is infeasible</h2>
+    {/if}
 </div>
 
 <style>

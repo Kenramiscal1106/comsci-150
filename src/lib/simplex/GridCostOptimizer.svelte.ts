@@ -262,6 +262,7 @@ export default class GridCostOptimizer {
 	}
 
 	private addAnswersToHistory() {
+		if (!this._solutionFound) return;
 		saveHistoryToLocalStorage({
 			answer: this._answer,
 			energyOutputPerPlant: $state.snapshot(this._energyOutputPerPlant),

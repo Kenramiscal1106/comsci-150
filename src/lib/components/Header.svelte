@@ -13,10 +13,20 @@ import MenuItem from "#lib/components/MenuItem.svelte";
             <MenuItem href="/history">
                 History
             </MenuItem>
+            <MenuItem href="/about">
+                Help
+            </MenuItem>
         </nav>
 </header>
 
 <style>
+    @media print {
+        :global(header) {
+            display:none!important;
+            border-bottom:none!important;
+        }
+    }
+
     header {
         display: flex;
         position: fixed;

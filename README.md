@@ -64,15 +64,10 @@ npm run dev # runs a local web server to debug the application
 - All the other files and folders that start with dot(.) are auto-generated and must not be touched
 
 ***
-# Implementation
+## Implementation
 
 To handle all calculations, each class hold the following functions:
 - `BlocksDataStore` handles the blocks Data
 - `PlantDataStore` handles all plant data
 - `TableauCreator` creates the tableau together with the plant data and blocks data
 - `GridCostOptimizer` handles all the simplex operations and operates on the tableau created by the `TableauCreator`
-
-***
-## Acknowledgements
-
-Special thanks to Sir Aaron Carl Maano for guiding me throughout the CMSC 150 journey, especially in lab exercises related to the final project. To my super classmates James Jaron, Nash Soriano, and Allen Dominic Sacristan for being a superb classmates, and to my family, and other friends, as well as my girlfriend, to provided financial and emotional support.  

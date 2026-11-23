@@ -7,6 +7,8 @@
     import CheckBox from "#lib/components/CheckBox.svelte";
     import NumberInput from "#lib/components/NumberInput.svelte";
     import {delay} from "es-toolkit";
+    import BezierEasing from "bezier-easing";
+    import {fly} from "svelte/transition";
 
     const optimizationDialog = getOptimizationDialog();
     const plantDataStore = getPlantDataStore();
@@ -22,7 +24,17 @@
     let zeroCarbon = $state(false)
 </script>
 
-<div class="dialog">
+<div class="dialog"
+     in:fly={{
+        duration: 150,
+        y:-20,
+        easing: BezierEasing(0, 0, 0.3, 1)
+    }}
+     out:fly={{
+        duration: 150,
+        y:-20,
+        easing: BezierEasing(0.4, 0.14, 1, 1)
+    }}>
     <div class="dialog-header">
         <h2>New Grid Optimization</h2>
     </div>

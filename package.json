@@ -32,7 +32,9 @@
 		"vite": "^8.3.0"
 	},
 	"dependencies": {
+		"bezier-easing": "^3.2.0",
 		"cn": "^0.5.2",
-		"es-toolkit": "^1.53.2"
+		"es-toolkit": "^1.53.2",
+		"mdsvex": "^1.0.1"
 	}
 }

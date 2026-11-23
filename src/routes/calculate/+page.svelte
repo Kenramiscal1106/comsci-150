@@ -14,15 +14,15 @@
 
 {#if !gridCostOptimizer._completed && !gridCostOptimizer._solutionFound}
     <div class=" flex flex-col justify-center items-center self-center">
-<!--        <div>-->
-            <h1 class="text-3xl font-medium">Yet to cook</h1>
-            <p class="mb-3">You haven't started an optimization yet.</p>
-            <Button onclick={() => {optimizationDialog.openDialog()}}>Start optimizing</Button>
-<!--        </div>-->
+        <!--        <div>-->
+        <h1 class="text-3xl font-medium">Yet to cook</h1>
+        <p class="mb-3">You haven't started an optimization yet.</p>
+        <Button onclick={() => {optimizationDialog.openDialog()}}>Start optimizing</Button>
+        <!--        </div>-->
     </div>
 {/if}
 {#if gridCostOptimizer._completed}
-    {#if gridCostOptimizer._solutionFound}
+    <div class="mb-auto gap-4 flex flex-col">
         <ResultTabs>
             <ResultTab activeTab="results">
                 Results
@@ -32,17 +32,22 @@
             </ResultTab>
         </ResultTabs>
         {#if resultTabs.activeTab === "results"}
-            <OptimizationResult />
+            <OptimizationResult/>
         {:else if resultTabs.activeTab === "simplex"}
             <IterationTableau/>
         {/if}
-    {:else}
-        <div class="flex flex-col justify-center items-center">
-            <div>
-                Cannot found solution
-                <Button onclick={() => optimizationDialog.openDialog()}>Change optimization configuration</Button>
+    </div>
+    <!--{#if gridCostOptimizer._solutionFound}-->
+    <!--{:else}-->
+    <!--    <div class="flex flex-col justify-center items-center">-->
+    <!--        <div>-->
+    <!--            <h2 class="text-2xl font-medium">-->
+    <!--                Cannot found solution-->
+    <!--            </h2>-->
+    <!--            <p>With the selected plant groups and carbon emission constraints, </p>-->
+    <!--            <Button onclick={() => optimizationDialog.openDialog()}>Change optimization configuration</Button>-->
 
-            </div>
-        </div>
-    {/if}
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--{/if}-->
 {/if}
